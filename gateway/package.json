@@ -1,0 +1,13 @@
+{
+  "name": "hardhat-project",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "hardhat": "^2.22.15"
+  },
+  "dependencies": {
+    "@zetachain/localnet": "^3.5.0",
+    "@zetachain/toolkit": "^12.0.0",
+    "axios": "^1.7.7",
+    "zetachain": "^1.0.0"
+  }
+}
