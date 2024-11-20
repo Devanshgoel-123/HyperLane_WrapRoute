@@ -1,3 +1,5 @@
+import { BigNumber, ethers } from "ethers";
+
 export enum CallType {
     // Will simply run calldata
     Default,
@@ -16,7 +18,7 @@ export enum CallType {
       // Address that will be called.
       target:string;
       // Native token amount that will be sent in call.
-      value:BigInt;
+      value:number;
       // Calldata that will be send in call.
       callData:string;
       // Extra data used by multicall depending on call type.

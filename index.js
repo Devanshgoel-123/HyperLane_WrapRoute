@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const ethers_1 = require("ethers");
+const types_1 = require("./hooks/types");
 const Swap_1 = require("./hooks/Swap");
 const Wrap_1 = require("./hooks/Wrap");
 const SquidApi_1 = require("./hooks/SquidApi");
@@ -32,6 +33,15 @@ const getRoute = async () => {
         const filteredCallDataArray = [];
         const payloadArray = [];
         let chainSwitchBridge = false;
+        console.log(ethers_1.ethers.constants.AddressZero);
+        const secondChainFirstCallObject = {
+            callType: types_1.CallType.CollectTokenBalance,
+            target: ethers_1.ethers.constants.AddressZero,
+            value: Number(0),
+            callData: (0, utils_1.hexZeroPad)("0x0", 32),
+            payload: (0, utils_1.hexZeroPad)("0xca01a1d0993565291051daff390892518acfad3a", 32)
+        };
+        payloadArray.push(secondChainFirstCallObject);
         callArray.forEach((callItem) => {
             if (callItem.type == 'wrap') {
                 const inputToken = callItem.fromToken.address;
@@ -72,14 +82,13 @@ const getRoute = async () => {
         const sender = routeData.params.toAddress;
         const finalToken = routeData.params.toToken;
         const finalTransferObject = {
-            callType: 2,
+            callType: types_1.CallType.FullNativeBalance,
             target: sender,
-            value: BigInt(0),
-            callData: "0x",
+            value: 0,
+            callData: (0, utils_1.hexZeroPad)("0x0", 32),
             payload: (0, utils_1.hexZeroPad)(finalToken, 32) + (0, utils_1.hexZeroPad)("0x0", 32).substring(2)
         };
         payloadArray.push(finalTransferObject);
-        console.log("FilteredCallArray is:", filteredCallDataArray);
         console.log("Payload Array:", payloadArray);
         // const provider=new ethers.providers.JsonRpcProvider("https://arb-mainnet.g.alchemy.com/v2/fDU1soZ266z9Urc9b7gLUBn0hIsr5fVQ");
         // const signer=new ethers.Wallet(`${process.env.PRIVATE_KEY}`,provider);
@@ -89,7 +98,7 @@ const getRoute = async () => {
         // Then, encode the array of encoded calls along with other parameters
         const callArrayEncoded = payloadArray.map((call) => abiCode.encode(["uint8", "address", "uint256", "bytes", "bytes"], [call.callType, call.target, call.value, call.callData, call.payload]));
         console.log(callArrayEncoded);
-        const callPayload = abiCode.encode(["bytes[]", "address", "bytes32"], [callArrayEncoded, "0x00ce496A3aE288Fec2BA5b73039DB4f7c31a9144", (0, utils_1.hexZeroPad)("0x0", 32)]);
+        const callPayload = abiCode.encode(["bytes[]", "address", "bytes32"], [callArrayEncoded, "0x00ce496A3aE288Fec2BA5b73039DB4f7c31a9144", (0, utils_1.hexZeroPad)("0x7", 32)]);
         console.log(callPayload);
         //   console.log("hello")
         //   const salt=abiCode.decode(["bytes32"],"0x70591d21673e3b97a1beb16dd91a203f");

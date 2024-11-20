@@ -1,5 +1,6 @@
 import { ethers } from "ethers";
 import { hexZeroPad } from "ethers/lib/utils";
+import { callItem, CallType } from "./types";
 enum SwapRouterName{
     "Uniswap V3" = "0x04e45aaf",
     "Camelot V3" = "0xbc651188",
@@ -10,10 +11,10 @@ export function PrepareCallDataForSwap(routerAddress:string, targetToken:string,
     const approve = "0x095ea7b3"; //remains the same for both side of the chains
     const approveCalldata = approve + hexZeroPad(target, 32).substring(2) + "f".repeat(64); //approve the spending of maximum amount
     const approvePayload = hexZeroPad(inputToken, 32) + hexZeroPad("0x0", 32).substring(3) + "1";
-    const callObject1 = {
-        callType: 0,
+    const callObject1:callItem = {
+        callType: CallType.Default,
         target: inputToken,
-        value: BigInt(0),
+        value: Number(0),
         callData: approveCalldata,
         payload: approvePayload
     };
@@ -29,10 +30,10 @@ export function PrepareCallDataForSwap(routerAddress:string, targetToken:string,
     const swapCallDataCamelot = swap + hexZeroPad(inputToken, 32).substring(2) + hexZeroPad(targetToken, 32).substring(2) + hexZeroPad(receiver, 32).substring(2) + hexZeroPad(deadline, 32).substring(2) + hexZeroPad(amountIn, 32).substring(2) + hexZeroPad(amountOutMinimum, 32).substring(2) + "0".repeat(64);
     const parameterPosition = "0x4";
     const swapPayload = hexZeroPad(inputToken, 32) + hexZeroPad(parameterPosition, 32).substring(2);
-    const callObject2 = {
-        callType: 1,
+    const callObject2:callItem = {
+        callType: CallType.FullTokenBalance,
         target: target,
-        value: BigInt(0),
+        value: Number(0),
         callData: dexName == "Uniswap V3" ? swapCallDataUniSwap : swapCallDataCamelot, //function values for the roputer 
         payload: swapPayload
     };

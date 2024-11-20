@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PrepareCallDataForSwap = PrepareCallDataForSwap;
 const ethers_1 = require("ethers");
 const utils_1 = require("ethers/lib/utils");
+const types_1 = require("./types");
 var SwapRouterName;
 (function (SwapRouterName) {
     SwapRouterName["Uniswap V3"] = "0x04e45aaf";
@@ -15,9 +16,9 @@ function PrepareCallDataForSwap(routerAddress, targetToken, inputToken, value, t
     const approveCalldata = approve + (0, utils_1.hexZeroPad)(target, 32).substring(2) + "f".repeat(64); //approve the spending of maximum amount
     const approvePayload = (0, utils_1.hexZeroPad)(inputToken, 32) + (0, utils_1.hexZeroPad)("0x0", 32).substring(3) + "1";
     const callObject1 = {
-        callType: 0,
+        callType: types_1.CallType.Default,
         target: inputToken,
-        value: BigInt(0),
+        value: Number(0),
         callData: approveCalldata,
         payload: approvePayload
     };
@@ -34,9 +35,9 @@ function PrepareCallDataForSwap(routerAddress, targetToken, inputToken, value, t
     const parameterPosition = "0x4";
     const swapPayload = (0, utils_1.hexZeroPad)(inputToken, 32) + (0, utils_1.hexZeroPad)(parameterPosition, 32).substring(2);
     const callObject2 = {
-        callType: 1,
+        callType: types_1.CallType.FullTokenBalance,
         target: target,
-        value: BigInt(0),
+        value: Number(0),
         callData: dexName == "Uniswap V3" ? swapCallDataUniSwap : swapCallDataCamelot, //function values for the roputer 
         payload: swapPayload
     };
