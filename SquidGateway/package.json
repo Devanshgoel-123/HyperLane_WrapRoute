@@ -1,0 +1,17 @@
+{
+  "name": "hardhat-project",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "hardhat": "^2.22.16",
+    "ts-node": "^10.9.2"
+  },
+  "dependencies": {
+    "@axelar-network/axelar-cgp-solidity": "^6.4.0",
+    "@axelar-network/axelar-gmp-sdk-solidity": "^6.0.4",
+    "@nomicfoundation/hardhat-ignition": "^0.15.8",
+    "@uniswap/v3-periphery": "^1.4.4",
+    "dotenv": "^16.4.5",
+    "ethers": "^5.7.2",
+    "typescript": "^5.7.2"
+  }
+}
